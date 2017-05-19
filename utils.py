@@ -98,7 +98,7 @@ def get_data_set(dirname, start_index=None, end_index=None):
 def decode_a_seq(indexes, spars_tensor):
     decoded = []
     for m in indexes:
-        str = common.DIGITS[spars_tensor[1][m]]
+        str = common.DIGITS[spars_tensor[1][m] - 1]
         decoded.append(str)
     # Replacing blank label to none
     #str_decoded = str_decoded.replace(chr(ord('9') + 1), '')
