@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 #
 # Copyright (c) 2016 Matthew Earl
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 #     The above copyright notice and this permission notice shall be included
 #     in all copies or substantial portions of the Software.
-# 
+#
 #     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 #     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 #     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
@@ -46,8 +46,8 @@ from PIL import ImageFont
 import common
 from common import OUTPUT_SHAPE
 
-fonts = ["fonts/Farrington-7B-Qiqi.ttf", "fonts/Arial.ttf", "fonts/times.ttf"]
-# fonts = ["fonts/times.ttf"]
+#fonts = ["fonts/Farrington-7B-Qiqi.ttf", "fonts/Arial.ttf", "fonts/times.ttf"]
+fonts = ["fonts/songti.ttf"]
 FONT_HEIGHT = 32  # Pixel size to which the chars are resized
 
 CHARS = common.CHARS + " "
@@ -283,6 +283,8 @@ if __name__ == "__main__":
             os.mkdir(dir_name)
         im_gen = generate_ims(size.get(dir_name))
         for img_idx, (im, c, p) in enumerate(im_gen):
-            fname = dir_name + "/{:08d}_{}_{}.png".format(img_idx, c, "1" if p else "0")
+            #fname = unicode(dir_name) + u"/{:08d}_{}_{}.png".format(img_idx, "ccc", "1" if p else "0")
+            fname = unicode(dir_name) + u"/{:08d}_{}_{}.png".format(img_idx, c, "1" if p else "0")
             print '\''+fname+'\','
-            cv2.imwrite(fname, im * 255.)
+            #cv2.imwrite(fname, im * 255.)
+            cv2.imencode('.png', im * 255.)[1].tofile(fname)
