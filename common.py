@@ -54,6 +54,10 @@ for file_line in f:
     file_line = file_line.strip()
     c_list = unicode(file_line, 'utf8')
 
+# Hyper-parameters
+num_epochs = 1000000
+num_hidden = 1024
+num_layers = 2
 
 DIGITS = c_list
 
@@ -64,24 +68,21 @@ TEST_SIZE = 200
 ADD_BLANK = True   # if add a blank between digits
 LEARNING_RATE_DECAY_FACTOR = 0.9  # The learning rate decay factor
 INITIAL_LEARNING_RATE = 1e-3
-DECAY_STEPS = 5000
+DECAY_STEPS = 4000 * num_epochs / 10
+
 
 # parameters for bdlstm ctc
-#BATCH_SIZE = 256
-#BATCHES = 4000
+BATCH_SIZE = 256
+BATCHES = 4000
 
-BATCH_SIZE = 64
-BATCHES = 10
+#BATCH_SIZE = 64
+#BATCHES = 10
 
 TRAIN_SIZE = BATCH_SIZE * BATCHES
 
 MOMENTUM = 0.9
-REPORT_STEPS = 10
+REPORT_STEPS = BATCHES / 10
 
-# Hyper-parameters
-num_epochs = 200
-num_hidden = 64
-num_layers = 1
 
 # Some configs
 # Accounting the 0th indice +  space + blank label = 28 characters
