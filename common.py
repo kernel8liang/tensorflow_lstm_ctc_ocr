@@ -1,15 +1,15 @@
 # Copyright (c) 2016 Matthew Earl
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 #     The above copyright notice and this permission notice shall be included
 #     in all copies or substantial portions of the Software.
-# 
+#
 #     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 #     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 #     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
@@ -31,8 +31,8 @@ import numpy as np
 # Constants
 import time
 
-SPACE_INDEX = 0
-FIRST_INDEX = ord('0') - 1  # 0 is reserved to space
+#SPACE_INDEX = 0
+#FIRST_INDEX = ord('0') - 1  # 0 is reserved to space
 
 SPACE_TOKEN = '<space>'
 
@@ -46,7 +46,16 @@ OUTPUT_SHAPE = (64, 256)
 
 DIGITS = "0123456789"
 # LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DIGITS = "0123456789"
 
+f = open("chinese_3754.txt", "r")
+c_list = None
+for file_line in f:
+    file_line = file_line.strip()
+    c_list = unicode(file_line, 'utf8')
+
+
+DIGITS = c_list
 
 CHARS = DIGITS
 LENGTH = 16
@@ -58,13 +67,16 @@ INITIAL_LEARNING_RATE = 1e-3
 DECAY_STEPS = 5000
 
 # parameters for bdlstm ctc
+#BATCH_SIZE = 256
+#BATCHES = 4000
+
 BATCH_SIZE = 64
 BATCHES = 10
 
 TRAIN_SIZE = BATCH_SIZE * BATCHES
 
 MOMENTUM = 0.9
-REPORT_STEPS = 100
+REPORT_STEPS = 10
 
 # Hyper-parameters
 num_epochs = 200
@@ -118,25 +130,25 @@ def read_data_for_lstm_ctc(dirname, start_index=None, end_index=None):
     else:
         for i in range(start_index, end_index):
             fname_index = "{:08d}".format(i)
-            # print(fname_index)
             fname_list.append(fname_index)
-    # print("regrex time ", time.time() - start)
     start = time.time()
+
     dir_data_set = data_set.get(dirname)
     for fname in sorted(fname_list):
         # im = cv2.imread(fname)[:, :, 0].astype(numpy.float32) / 255.
         # code = list(fname.split("/")[1].split("_")[1])
         im, code = dir_data_set.get(fname)
-        yield im, numpy.asarray([SPACE_INDEX if x == SPACE_TOKEN else (ord(x) - FIRST_INDEX) for x in list(code)])
+        yield im, numpy.asarray([DIGITS.find(x)  for x in list(unicode("".join(code),  "utf8"))])
         # print("get time ", time.time() - start)
 
 
-def convert_original_code_train_code(code):
-    return numpy.asarray([SPACE_INDEX if x == SPACE_TOKEN else (ord(x) - FIRST_INDEX) for x in code])
+#def convert_original_code_train_code(code):
+#    return numpy.asarray([SPACE_INDEX if x == SPACE_TOKEN else (ord(x) - FIRST_INDEX) for x in code])
 
 
 def unzip(b):
     xs, ys = zip(*b)
+
     xs = numpy.array(xs)
     ys = numpy.array(ys)
     return xs, ys
